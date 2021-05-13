@@ -10,6 +10,8 @@ NPC::NPC(sf::Vector2f t_pos, float size)
 {
 	m_myTile = new Tile(t_pos, size);
 	m_myTile->setColourBlue();
+
+	m_clock.restart(); //restart the clock
 }
 
 NPC::~NPC()
@@ -26,7 +28,11 @@ void NPC::update(sf::Time t_deltaTime)
 {
 	if (m_path.size() > 0)
 	{
-		walkPath();
+		if (m_clock.getElapsedTime() > t_deltaTime)
+		{
+			walkPath();
+			m_clock.restart();
+		}
 	}
 }
 

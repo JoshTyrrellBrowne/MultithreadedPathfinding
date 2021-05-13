@@ -1,6 +1,6 @@
 
 // The NPC object
-
+#include <iostream>
 #include "SFML/Graphics.hpp"
 #include "Tile.h"
 #include "Graph.h"
@@ -26,4 +26,5 @@ private:
 	Tile* m_myTile; // The tile representing this NPC
 	Graph<NodeData, int>* m_graph; // pointer to the graph
 	std::vector<Node*> m_path; // The path we get from A star call
+	sf::Clock m_clock; // clock used for slowing pathfinding
 };
