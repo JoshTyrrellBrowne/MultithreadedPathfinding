@@ -65,7 +65,11 @@ void Game::processInput()
 		{
 			if (sf::Keyboard::Space == event.key.code)
 			{
-				m_npc->getPathToGoal(sf::Vector2f(980, 980));
+				for (auto m_npc : m_npcContainer)
+				{
+					m_npc->setGoalPosition(sf::Vector2f(980, 980));
+					m_npc->createThread(m_npc);
+				}
 			}
 			if (sf::Keyboard::Escape == event.key.code)
 			{
@@ -105,8 +109,10 @@ void Game::processInput()
 // Updates Game
 void Game::update(sf::Time t_deltaTime)
 {
-	m_npc->update(t_deltaTime);
-	
+	for (auto m_npc : m_npcContainer)
+	{
+		m_npc->update(t_deltaTime);
+	}
 }
 
 // Renders
@@ -117,7 +123,10 @@ void Game::render()
 	{
 		m_TileMap.at(i).render(&m_renderWin);
 	}
-	m_npc->render(&m_renderWin);
+	for (auto m_npc : m_npcContainer)
+	{
+		m_npc->render(&m_renderWin);
+	}
 	
 	m_renderWin.display();
 }
@@ -127,8 +136,14 @@ void Game::render()
 void Game::intialize()
 {
 	m_tileSize = 20;
-	// Init NPC
-	m_npc = new NPC(sf::Vector2f(0, 0), m_tileSize);
+	// Init NPC's
+	NPC* m_npc = nullptr;
+	for (int i = 0; i < m_npcCount; i++)
+	{
+		m_npc = new NPC(sf::Vector2f((rand() % 50), (rand() % 50)), m_tileSize);
+		m_npcContainer.push_back(m_npc);
+	}
+	
 
 	// Create the graph tile objects
 	for (int x = 0; x < 50; x++)
@@ -217,5 +232,8 @@ void Game::setGraphNeighbours()
 			}
 		}
 	}
-	m_npc->passGraph(graph);
+	for (auto m_npc : m_npcContainer)
+	{
+		m_npc->passGraph(graph);
+	}
 }

@@ -35,6 +35,7 @@ private:
 	float m_tileSize;
 	Graph<NodeData, int>* graph;
 
-	NPC* m_npc;
+	int m_npcCount = 5;
+	std::vector<NPC*> m_npcContainer;
 };
 

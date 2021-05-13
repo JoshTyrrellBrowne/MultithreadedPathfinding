@@ -41,12 +41,30 @@ void NPC::passGraph(Graph<NodeData, int>* t_graph)
 	m_graph = t_graph;
 }
 
-void NPC::getPathToGoal(sf::Vector2f t_goal)
+void NPC::unMarkGraph()
 {
-	Node* startNode = getNodeFromPosition(m_myTile->getPosition());
-	Node* goalNode = getNodeFromPosition(t_goal);
+	for (int i = 0; i < m_graph->getNodes()->size(); i++)
+	{
+		m_graph->getNodes()->at(i)->setMarked(false);
+	}
+}
 
-	m_graph->aStar(startNode, goalNode, visit, m_path);
+auto lambda_GetPathToGoal = [](NPC* m_npcObj)
+{
+	std::cout << "SUCCESS" << std::endl;
+	Node* startNode = m_npcObj->getNodeFromPosition(m_npcObj->m_myTile->getPosition());
+	Node* goalNode = m_npcObj->getNodeFromPosition(m_npcObj->m_goalPosition);
+	m_npcObj->unMarkGraph();  // unmark all nodes so fresh graph
+	m_npcObj->m_graph->aStar(startNode, goalNode, visit, m_npcObj->m_path);
+};
+
+void NPC::getPathToGoal()
+{
+	//std::cout << "SUCCESS" << std::endl;
+	//Node* startNode = getNodeFromPosition(m_myTile->getPosition());
+	//Node* goalNode = getNodeFromPosition(m_goalPosition);
+	//unMarkGraph();  // unmark all nodes so fresh graph
+	//m_graph->aStar(startNode, goalNode, visit, m_path);
 }
 
 Node* NPC::getNodeFromPosition(sf::Vector2f t_pos)
@@ -89,4 +107,15 @@ void NPC::walkPath()
 
 		m_myTile->setPosition(m_path.front()->m_data.m_position);
 	}
+}
+
+void NPC::createThread(NPC* m_npc)
+{
+	threadForPathfinding = std::thread(lambda_GetPathToGoal, m_npc);
+	threadForPathfinding.join();  //remove
+}
+
+void NPC::setGoalPosition(sf::Vector2f t_goalPosition)
+{
+	m_goalPosition = t_goalPosition;
 }
