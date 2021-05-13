@@ -6,6 +6,7 @@
 #include <vector>
 #include <functional>
 #include "NodeData.h"
+#include "SFML/Graphics.hpp"
 
 
 template <class NodeType, class ArcType> class GraphArc;
@@ -52,7 +53,7 @@ public:
 
 	int getIndexFromName(std::string);
 	int getIndexFromNode(Node t_node);
-	//Node* getNodeFromName(std::string t_name);
+	bool getNodeFromPosition(sf::Vector2f t_pos, Node* t_nodePtr);
 private:
 	
 
@@ -548,7 +549,6 @@ inline int Graph<NodeType, ArcType>::getIndexFromName(std::string t_name)
 template<class NodeType, class ArcType>
 inline int Graph<NodeType, ArcType>::getIndexFromNode(Node t_node)
 {
-	auto it = m_nodes.begin();
 	int index = 0;
 	while (m_nodes.at(index)->m_data.m_name != t_node->m_data.m_name)
 	{
@@ -563,17 +563,22 @@ inline int Graph<NodeType, ArcType>::getIndexFromNode(Node t_node)
 	return index;
 }
 
-//template<class NodeType, class ArcType>
-//inline Node* Graph<NodeType, ArcType>::getNodeFromName(std::string t_name)
-//{
-//	auto it = m_nodes.begin();
-//	while (m_nodes.at(index)->m_data.m_name != t_name)
-//	{
-//		
-//	}
-//
-//	return it;
-//}
+template<class NodeType, class ArcType>
+bool Graph<NodeType, ArcType>::getNodeFromPosition(sf::Vector2f t_pos, Node* t_nodePtr)
+{
+	int index = 0;
+	std::cout << m_nodes.at(index)->m_data.m_position.x << ", " << m_nodes.at(index)->m_data.m_position.y << std::endl;
+	while (m_nodes.at(index)->m_data.m_position != (MyVector3)t_pos)
+	{
+		index++;
+		if (index > m_nodes.size())
+		{
+			return false;
+		}
+	}
+	*t_nodePtr = *m_nodes.at(index);
+	return true;
+}
 
 
 
