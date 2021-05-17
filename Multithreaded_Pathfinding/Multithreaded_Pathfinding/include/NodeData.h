@@ -39,7 +39,7 @@ public:
 	int m_npcID;
 	bool operator()(Node* n1, Node* n2)
 	{
-		for (int i = 0; i < m_npcCount; i++)
+		for (int i = m_npcCount - 1; i >= 0; i--)
 		{
 			if (threadID_Vec.at(i) == std::this_thread::get_id())
 			{

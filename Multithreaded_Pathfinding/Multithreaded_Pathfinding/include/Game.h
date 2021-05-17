@@ -38,7 +38,6 @@ protected:
 private:
 	sf::RenderWindow m_renderWin; // main SFML window
 
-	const int mapSize = 50; // the number of nodes wide and high we want the map
 	std::vector<Tile> m_TileMap; // the tile map (vector of tile objects)
 	std::vector<MyVector3> impassableTilPositions;
 	float m_tileSize;

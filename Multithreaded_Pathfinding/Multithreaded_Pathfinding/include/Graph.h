@@ -260,7 +260,7 @@ inline void Graph<NodeType, ArcType>::aStar(int npcID, Node* start, Node* dest, 
 	/*auto compare = [=](Node* n1, Node* n2) -> bool
 	{ return n1->m_data.m_totalEstimatedDistance.at(npcID) > n2->m_data.m_totalEstimatedDistance.at(npcID); };
 
-	MyPriorityQueue<Node*, std::vector<Node*>, decltype(&compare)> pq(&compare);*/
+	MyPriorityQueue<Node*, std::vector<Node*>, decltype(compare)> pq(compare);*/
 
 	MyPriorityQueue<Node*, std::vector<Node*>, NodeSearchCostComparerAstar<NodeType, ArcType>> pq;
 	

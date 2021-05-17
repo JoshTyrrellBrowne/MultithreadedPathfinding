@@ -26,6 +26,8 @@ void ThreadPool::loopingFunction()
         auto Job = m_function_queue.front();  // get next job
         m_function_queue.pop();  // pop next job, because this thread has just taken it 
         
+        lock.unlock();
+
         Job(); // function<void()> type, DO THE JOB
     }
 }

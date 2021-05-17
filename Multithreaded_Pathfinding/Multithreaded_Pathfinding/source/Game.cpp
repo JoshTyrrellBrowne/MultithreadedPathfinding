@@ -59,11 +59,14 @@ void visit(Node* t_node)
 
 void Game::GetPathToGoal(NPC* m_npcObj)
 {
+	threadID_Vec.at(m_npcObj->ID) = std::this_thread::get_id();
+
 	Node* startNode = m_npcObj->getNodeFromPosition(m_npcObj->m_myTile->getPosition());
 	Node* goalNode = m_npcObj->getNodeFromPosition(m_npcObj->m_goalPosition);
 	m_npcObj->unMarkGraph();  // unmark all nodes so fresh graph
 	m_npcObj->m_graph->aStar(m_npcObj->ID, startNode, goalNode, visit, m_npcObj->m_path);
 }
+
 bool Game::isPosOnImpassable(MyVector3 t_pos)
 {
 	for (MyVector3 pos : impassableTilPositions)
@@ -165,8 +168,8 @@ void Game::intialize()
 	initImpassableTiles(); 
 
 	m_tileSize = m_renderWin.getSize().y / mapSize;
-	goalX = mapSize - 1;
-	goalY = 0;
+	goalX = mapSize - 5;
+	goalY = 5;
 	goalPosition = sf::Vector2f(goalX * m_tileSize, goalY * m_tileSize);  // set goal position
 
 	// Create the graph tile objects
