@@ -312,7 +312,7 @@ inline void Graph<NodeType, ArcType>::aStar(int npcID, Node* start, Node* dest, 
 							//(*iter).m_weight += (*iter).m_weight;
 							//(*iter).increaseWeight();
 
-							extraWeight += (*iter).weight();
+							extraWeight += ((*iter).weight() * 7);
 						}
 					}	
 				}
