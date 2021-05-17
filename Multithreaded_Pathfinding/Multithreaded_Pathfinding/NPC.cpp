@@ -1,13 +1,8 @@
 #include "NPC.h"
 
-// used for pathfinding only (so we can see path in console)
-void visit(Node* t_node)
+NPC::NPC(int t_ID, sf::Vector2f t_pos, float size, Graph<NodeData, int>* t_graph) : m_graph(t_graph)
 {
-	std::cout << "Visiting: " << t_node->m_data.m_position.x << ", " << t_node->m_data.m_position.y << std::endl;
-}
-
-NPC::NPC(sf::Vector2f t_pos, float size)
-{
+	ID = t_ID;
 	m_myTile = new Tile(t_pos, size);
 	m_myTile->setColourBlue();
 
@@ -45,18 +40,17 @@ void NPC::unMarkGraph()
 {
 	for (int i = 0; i < m_graph->getNodes()->size(); i++)
 	{
-		m_graph->getNodes()->at(i)->setMarked(false);
+		m_graph->getNodes()->at(i)->setMarked(false, ID);
 	}
 }
 
-auto lambda_GetPathToGoal = [](NPC* m_npcObj)
-{
-	std::cout << "SUCCESS" << std::endl;
-	Node* startNode = m_npcObj->getNodeFromPosition(m_npcObj->m_myTile->getPosition());
-	Node* goalNode = m_npcObj->getNodeFromPosition(m_npcObj->m_goalPosition);
-	m_npcObj->unMarkGraph();  // unmark all nodes so fresh graph
-	m_npcObj->m_graph->aStar(startNode, goalNode, visit, m_npcObj->m_path);
-};
+//auto lambda_GetPathToGoal = [](NPC* m_npcObj)
+//{
+//	Node* startNode = m_npcObj->getNodeFromPosition(m_npcObj->m_myTile->getPosition());
+//	Node* goalNode = m_npcObj->getNodeFromPosition(m_npcObj->m_goalPosition);
+//	m_npcObj->unMarkGraph();  // unmark all nodes so fresh graph
+//	m_npcObj->m_graph->aStar(m_npcObj->ID, startNode, goalNode, visit, m_npcObj->m_path);
+//};
 
 void NPC::getPathToGoal()
 {
@@ -111,8 +105,9 @@ void NPC::walkPath()
 
 void NPC::createThread(NPC* m_npc)
 {
-	threadForPathfinding = std::thread(lambda_GetPathToGoal, m_npc);
-	threadForPathfinding.join();  //remove
+	//threadForPathfinding = std::thread(lambda_GetPathToGoal, m_npc);
+	//threadID_Vec.at(ID) = threadForPathfinding.get_id();  // set the id for the id at this NPC_ID position in the vec (used in compare predicate)
+	//threadForPathfinding.join();  //remove
 }
 
 void NPC::setGoalPosition(sf::Vector2f t_goalPosition)

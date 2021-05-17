@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graph.h" />
     <ClInclude Include="include\GraphArc.h" />
@@ -27,6 +28,7 @@
     <ClInclude Include="include\NodeData.h" />
     <ClInclude Include="include\Tile.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="ThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NPC.cpp" />
@@ -34,6 +36,7 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MyVector3.cpp" />
     <ClCompile Include="source\Tile.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -16,6 +16,7 @@ public:
 	void setColour(sf::Color t_Colour);
 	void setColourBlue();
 	void setColourRed();
+	void setColourBlack();
 	void setPosition(MyVector3 pos);
 	sf::Vector2f getPosition();
 

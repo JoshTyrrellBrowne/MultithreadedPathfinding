@@ -1,7 +1,9 @@
 #ifndef GRAPHNODE_H
 #define GRAPHNODE_H
 
+#include "Globals.h"
 #include <list>
+
 
 // Forward references
 template <typename NodeType, typename ArcType> class GraphArc;
@@ -21,7 +23,7 @@ public:
 	typedef GraphNode<NodeType, ArcType> Node;
 
 	// Constructor function
-	GraphNode( Node * previous = 0 ) : m_previous( previous ) {}
+	GraphNode() {}
 
     // Accessor functions
     std::list<Arc> const & arcList() const 
@@ -29,24 +31,24 @@ public:
         return m_arcList;              
     }
 
-    bool marked() const 
+    bool marked(int npcID) const
 	{
-        return m_marked;
+        return m_marked.at(npcID);
     }
 
-	Node * getPrevious() const 
+	Node * getPrevious(int npcID) const
 	{
-		return m_previous;
+		return m_previousList.at(npcID);
 	}
 
-    void setMarked(bool mark) 
+    void setMarked(bool mark, int npcID)
 	{
-        m_marked = mark;
+        m_marked.at(npcID) = mark;
     }
            
-	void setPrevious(Node *previous) 
+	void setPrevious(int npcID, Node *t_previous)
 	{
-		m_previous = previous;
+		m_previousList.at(npcID) = t_previous;
 	}
 
     Arc* getArc( Node* node );    
@@ -68,12 +70,12 @@ private:
 	// -------------------------------------------------------
 	// Description: This remembers if the node is marked.
 	// -------------------------------------------------------
-	bool m_marked;
+	std::vector<bool> m_marked = std::vector<bool>(m_npcCount, false);
 
 	// -------------------------------------------------------
 	// Description: pointer to previous node
 	// -------------------------------------------------------
-	Node* m_previous;
+	std::vector<Node*> m_previousList = std::vector<Node*>(m_npcCount, nullptr);
 };
 
 // ----------------------------------------------------------------

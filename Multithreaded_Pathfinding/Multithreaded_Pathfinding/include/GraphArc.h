@@ -22,9 +22,10 @@ private:
 // -------------------------------------------------------
 // Description: Weight of the arc
 // -------------------------------------------------------
-    ArcType m_weight;
+    
 
 public:    
+    ArcType m_weight;
     
     // Accessor functions
     GraphNode<NodeType, ArcType>* node() const 
@@ -46,6 +47,11 @@ public:
     void setWeight(ArcType weight) 
 	{
        m_weight = weight;
+    }
+
+    void increaseWeight()
+    {
+        m_weight += m_weight;
     }
     
 };

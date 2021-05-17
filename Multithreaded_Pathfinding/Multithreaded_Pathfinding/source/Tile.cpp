@@ -35,6 +35,11 @@ void Tile::setColourRed()
 	m_tileRect.setFillColor(sf::Color::Red);
 }
 
+void Tile::setColourBlack()
+{
+	m_tileRect.setFillColor(sf::Color::Black);
+}
+
 void Tile::setPosition(MyVector3 pos)
 {
 	//Handle from MyVector3 to sf::Vector2f
