@@ -390,7 +390,7 @@ template<class NodeType, class ArcType>
 bool Graph<NodeType, ArcType>::getNodeFromPosition(sf::Vector2f t_pos, Node* t_nodePtr)
 {
 	int index = 0;
-	std::cout << m_nodes.at(index)->m_data.m_position.x << ", " << m_nodes.at(index)->m_data.m_position.y << std::endl;
+	//std::cout << m_nodes.at(index)->m_data.m_position.x << ", " << m_nodes.at(index)->m_data.m_position.y << std::endl;
 	while (m_nodes.at(index)->m_data.m_position != (MyVector3)t_pos)
 	{
 		index++;

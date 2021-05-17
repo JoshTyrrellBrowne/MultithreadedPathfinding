@@ -54,7 +54,7 @@ void Game::run()
 // used for pathfinding only (so we can see path in console)
 void visit(Node* t_node)
 {
-	//std::cout << "Visiting: " << t_node->m_data.m_position.x << ", " << t_node->m_data.m_position.y << std::endl;
+	//std::cout << "Thread: " << std::this_thread::get_id() << " is now visiting: " << t_node->m_data.m_position.x << ", " << t_node->m_data.m_position.y << std::endl;
 }
 
 void Game::GetPathToGoal(NPC* m_npcObj)
@@ -65,6 +65,8 @@ void Game::GetPathToGoal(NPC* m_npcObj)
 	Node* goalNode = m_npcObj->getNodeFromPosition(m_npcObj->m_goalPosition);
 	m_npcObj->unMarkGraph();  // unmark all nodes so fresh graph
 	m_npcObj->m_graph->aStar(m_npcObj->ID, startNode, goalNode, visit, m_npcObj->m_path);
+
+	threadID_Vec.at(m_npcObj->ID) = std::thread::id();
 }
 
 bool Game::isPosOnImpassable(MyVector3 t_pos)
@@ -202,12 +204,12 @@ void Game::intialize()
 	MyVector3 pos;
 	for (int i = 0; i < m_npcCount; i++)
 	{
+		//pos = MyVector3(0, 0, 0);
 		pos = MyVector3(rand() % mapSize, rand() % mapSize, 0);
 		while (isPosOnImpassable(pos))
 		{
 			pos = MyVector3(rand() % mapSize, rand() % mapSize, 0);
 		}
-
 
 		m_npc = new NPC(i, sf::Vector2f(pos.x, pos.y), m_tileSize, graph);
 		//m_npc = new NPC(i, sf::Vector2f((0 % mapSize), (0 % mapSize)), m_tileSize, graph);
@@ -254,8 +256,8 @@ void Game::initializeGraph()
 
 void Game::setGraphNeighbours()
 {
-	int mapWidth = 50;
-	int mapHeight = 50;
+	int mapWidth = 100;
+	int mapHeight = 100;
 
 	for (int y = 0; y < mapHeight; y++)
 	{

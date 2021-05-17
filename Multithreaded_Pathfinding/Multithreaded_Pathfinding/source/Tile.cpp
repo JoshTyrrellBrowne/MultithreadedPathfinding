@@ -3,7 +3,7 @@
 Tile::Tile(sf::Vector2f t_pos, float t_size)
 {
 	position = t_pos * t_size;
-	m_tileRect.setPosition(t_pos * t_size);
+	m_tileRect.setPosition(position);
 	m_tileRect.setSize(sf::Vector2f(t_size, t_size));
 	m_tileRect.setFillColor(sf::Color::Green);
 	m_tileRect.setOutlineColor(sf::Color::Black);

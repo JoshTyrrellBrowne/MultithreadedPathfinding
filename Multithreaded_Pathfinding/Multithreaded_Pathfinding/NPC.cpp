@@ -65,7 +65,7 @@ Node* NPC::getNodeFromPosition(sf::Vector2f t_pos)
 {
 	int index = 0;
 	
-	std::cout << m_graph->getNodes()->at(index)->m_data.m_position.x << ", " << m_graph->getNodes()->at(index)->m_data.m_position.y << std::endl;
+	//std::cout << m_graph->getNodes()->at(index)->m_data.m_position.x << ", " << m_graph->getNodes()->at(index)->m_data.m_position.y << std::endl;
 	while (m_graph->getNodes()->at(index)->m_data.m_position != (MyVector3)t_pos)
 	{
 		if (index < m_graph->getNodes()->size())
@@ -100,6 +100,7 @@ void NPC::walkPath()
 		//}
 
 		m_myTile->setPosition(m_path.front()->m_data.m_position);
+		m_path.erase(m_path.begin(), m_path.begin() + 1);
 	}
 }
 
