@@ -31,6 +31,8 @@ public:
 	Graph<NodeData, int>* m_graph; // pointer to the graph
 	std::vector<Node*> m_path; // The path we get from A star call
 	sf::Vector2f m_goalPosition;
+
+	bool isWalkPath;
 private:
 	sf::Clock m_clock; // clock used for slowing pathfinding
 

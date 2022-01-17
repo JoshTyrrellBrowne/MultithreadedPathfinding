@@ -5,6 +5,7 @@ NPC::NPC(int t_ID, sf::Vector2f t_pos, float size, Graph<NodeData, int>* t_graph
 	ID = t_ID;
 	m_myTile = new Tile(t_pos, size);
 	m_myTile->setColourBlue();
+	isWalkPath = false; // initially false, we want a pause after we find path, before we start walking
 
 	m_clock.restart(); //restart the clock
 }

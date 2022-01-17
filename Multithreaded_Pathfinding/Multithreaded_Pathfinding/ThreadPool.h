@@ -27,9 +27,7 @@ private:
 
 	std::vector<std::thread> m_thread_pool;    // the vector conataining all the threads
 	
-	
 	std::queue<std::function<void()>> m_function_queue;  // Job Queue
-	
 	
 	std::mutex queue_Mutex;  // mutex lock for thread taking a job & adding a job
 	std::condition_variable m_condition;

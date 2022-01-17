@@ -249,19 +249,11 @@ void Graph<NodeType, ArcType>::clearMarks()
      }
 }
 
+
+// IMPORTANT: this A-star is modified to behave in a way where the node actors pathfind to the goal with ambush style paths
 template<class NodeType, class ArcType>
 inline void Graph<NodeType, ArcType>::aStar(int npcID, Node* start, Node* dest, std::function<void(Node*)> f_visit, std::vector<Node*>& path)
 {
-	//const NodeSearchCostComparerAstar<NodeType, ArcType> aStarCostCompare = *new NodeSearchCostComparerAstar<NodeType, ArcType>(npcID);
-	//const MyPriorityQueue<Node*, std::vector<Node*>, decltype(aStarCostCompare)> pq{ &aStarCostCompare };
-
-
-	// Cant get this to work, although i think it is the solution
-	/*auto compare = [=](Node* n1, Node* n2) -> bool
-	{ return n1->m_data.m_totalEstimatedDistance.at(npcID) > n2->m_data.m_totalEstimatedDistance.at(npcID); };
-
-	MyPriorityQueue<Node*, std::vector<Node*>, decltype(compare)> pq(compare);*/
-
 	MyPriorityQueue<Node*, std::vector<Node*>, NodeSearchCostComparerAstar<NodeType, ArcType>> pq;
 	
 	for (Node* node : this->m_nodes)

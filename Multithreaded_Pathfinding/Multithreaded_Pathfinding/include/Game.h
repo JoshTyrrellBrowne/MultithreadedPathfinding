@@ -33,15 +33,15 @@ protected:
 
 	void GetPathToGoal(NPC* m_npcObj);
 
-	bool isPosOnImpassable(MyVector3 t_pos);
+	bool isPosOnImpassable(MyVector3 t_pos);   // check if pos is at an inpassable tile pos 
 
 private:
 	sf::RenderWindow m_renderWin; // main SFML window
 
 	std::vector<Tile> m_TileMap; // the tile map (vector of tile objects)
 	std::vector<MyVector3> impassableTilPositions;
-	float m_tileSize;
-	Graph<NodeData, int>* graph;
+	float m_tileSize;    // the size of each tile width & height
+	Graph<NodeData, int>* graph;     // pointer to graph
 
 	std::vector<NPC*> m_npcContainer;
 	int goalX;
