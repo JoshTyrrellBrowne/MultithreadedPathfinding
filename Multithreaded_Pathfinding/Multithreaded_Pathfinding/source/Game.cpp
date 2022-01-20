@@ -17,11 +17,11 @@ bool sortNodes(const Node* n1, const Node* n2)
 
 // Contructor
 Game::Game() :
-	m_renderWin{ sf::VideoMode{ 1920, 1280, 1 }, "MultiThreaded Pathfinding"}
+	m_renderWin{ sf::VideoMode{ 1000, 1000, 1 }, "MultiThreaded Pathfinding"}
 {
 	srand(time(nullptr));
 	intialize();
-	std::cout << "Press the Space bar to initiate Pathfinding" << std::endl;
+	std::cout << "Press the Space bar to initiate multi-thread pathfinding." << std::endl;
 }
 
 /// Destructor
@@ -81,7 +81,51 @@ bool Game::isPosOnImpassable(MyVector3 t_pos)
 	}
 	return false;
 }
-;
+
+int Game::getTileFromPos(MyVector3 t_pos)
+{
+	int index = 0;
+
+	while (m_TileMap.at(index).getPosition() != (sf::Vector2f)t_pos)
+	{
+		// do nothin till we find the right index
+		index++;
+	}
+	if (index < m_TileMap.size()) {
+		return index;  // return the correct index
+	}
+	else {
+		return -1; // we could not find a matching tile to that position
+	}
+}
+
+void Game::updateTileColors()
+{
+	std::cout << "success brah" << std::endl;
+	for (auto &tile : m_TileMap) {
+		if (tile.isOnAPath == true) {
+			tile.setColorPath();
+		}
+	}
+}
+
+bool Game::updateTilesToShowPaths()
+{
+	if (isPathfindingFinished) {
+		for (auto*& npc : m_npcContainer) {  // loop through each NPC
+			for (auto &node : npc->m_path) {  // then, loop through each NPC's path to goal
+				int index = getTileFromPos(node->m_data.m_position); // get the index of the tile at this position
+				m_TileMap.at(index).increaseOpacityForPathView();
+			}
+		}
+		updateTileColors(); // updating the colors is handled in this func
+		isTilesShowingPaths = true;
+		return true;
+	}
+	else {
+		return false;  // if we could not complete the updates, return false to signal this
+	}
+}
 
 // Process PC input
 void Game::processInput()
@@ -97,13 +141,26 @@ void Game::processInput()
 		{
 			if (sf::Keyboard::Space == event.key.code)
 			{
-				std::cout << "Beginning A*mbush pathfinding" << std::endl;
-				for (auto m_npc : m_npcContainer)
-				{
-					m_npc->setGoalPosition(goalPosition);
-					//m_npc->createThread(m_npc);
-					m_thread_pool.addJob(std::bind(&Game::GetPathToGoal, this, m_npc));
+  				if (!isPathfindingFinished) {
+					std::cout << "Beginning A*mbush pathfinding, please allow 5 seconds to pass before pressing space again, so pathfindning can finish." << std::endl;
+					for (auto*& m_npc : m_npcContainer)
+					{
+						m_npc->setGoalPosition(goalPosition);
+						//m_npc->createThread(m_npc);
+						m_thread_pool.addJob(std::bind(&Game::GetPathToGoal, this, m_npc));
+					}
+					isPathfindingFinished = true;
 				}
+				else if (!isTilesShowingPaths) {
+					std::cout << "Drawing paths to screen:" << std::endl;
+					updateTilesToShowPaths();
+				}
+				else {
+					isWalkPath = true;
+					std::cout << "Walking Paths" << std::endl;
+				}
+
+				
 			}
 			if (sf::Keyboard::Escape == event.key.code)
 			{
@@ -143,7 +200,7 @@ void Game::processInput()
 // Updates Game
 void Game::update(sf::Time t_deltaTime)
 {
-	for (auto m_npc : m_npcContainer)
+	for (auto*& m_npc : m_npcContainer)
 	{
 		m_npc->update(t_deltaTime);
 	}
@@ -152,12 +209,12 @@ void Game::update(sf::Time t_deltaTime)
 // Renders
 void Game::render()
 {
-	m_renderWin.clear(sf::Color::Black);
+	m_renderWin.clear(sf::Color::White);
 	for (int i = 0; i < m_TileMap.size(); i++)
 	{
 		m_TileMap.at(i).render(&m_renderWin);
 	}
-	for (auto m_npc : m_npcContainer)
+	for (auto*& m_npc : m_npcContainer)
 	{
 		m_npc->render(&m_renderWin);
 	}
@@ -169,6 +226,7 @@ void Game::render()
 // Everything is initialised from here
 void Game::intialize()
 {
+	initGlobals();
 	initImpassableTiles(); 
 
 	m_tileSize = m_renderWin.getSize().y / mapSize;
@@ -184,7 +242,8 @@ void Game::intialize()
 			Tile* tempTile = new Tile(sf::Vector2f(x, y), m_tileSize);
 			if (x == goalX && y == goalY) // this tile is the goal
 			{
-				tempTile->setColourRed();
+				tempTile->setColourYellow();
+				tempTile->isGoal = true;
 			}
 
 			// check if impassable, color black if so
@@ -195,7 +254,6 @@ void Game::intialize()
 					tempTile->setColourBlack();
 				}
 			}
-
 			m_TileMap.push_back(*tempTile);
 		}
 	}
@@ -227,7 +285,7 @@ void Game::initializeGraph()
 	NodeData nodeData; // needed for graph populating
 
 	int index = 0;
-	for (Tile tile : m_TileMap)
+	for (Tile &tile : m_TileMap)
 	{
 		nodeData.m_position = tile.getPosition();
 		nodeData.m_isPassable = true;

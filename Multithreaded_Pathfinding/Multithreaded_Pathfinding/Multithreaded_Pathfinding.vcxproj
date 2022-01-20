@@ -31,6 +31,7 @@
     <ClInclude Include="ThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Globals.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\main.cpp" />

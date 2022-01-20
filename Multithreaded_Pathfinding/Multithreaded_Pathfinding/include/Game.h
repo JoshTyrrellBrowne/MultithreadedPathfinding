@@ -35,6 +35,10 @@ protected:
 
 	bool isPosOnImpassable(MyVector3 t_pos);   // check if pos is at an inpassable tile pos 
 
+	int getTileFromPos(MyVector3 t_pos);
+	bool updateTilesToShowPaths();
+	void updateTileColors();
+
 private:
 	sf::RenderWindow m_renderWin; // main SFML window
 
